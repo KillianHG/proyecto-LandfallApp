@@ -2,7 +2,11 @@
   <div class="form">
     <div class="inner-content">
       <h1>Inicia sesión</h1>
-
+      <v-layout row v-if="error">
+        <v-flex xs12 sm6 offset-sm3>
+          <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>
+        </v-flex>
+      </v-layout>
       <form>
         <v-text-field
           v-model="email"
@@ -21,7 +25,7 @@
           @input="$v.password.$touch()"
           @blur="$v.password.$touch()"
         ></v-text-field>
-        <v-btn @click="submit">Enter</v-btn>
+        <v-btn @click="onSignin">Enter</v-btn>
         <v-btn @click="clear">Clear</v-btn>
       </form>
     </div>
@@ -37,12 +41,12 @@
 
     validations: {
       email: { required, email },
-      password: { required, minLength: minLength(6) },
+      password: { required, minLength: minLength(6) }
     },
 
     data: () => ({
       email: '',
-      password: '',
+      password: ''
     }),
 
     computed: {
@@ -59,17 +63,35 @@
         !this.$v.password.minLength && errors.push('Must be minimum 6 characters password')
         !this.$v.password.required && errors.push('Password is required')
         return errors
+      },
+      user () {
+        return this.$store.getters.user
+      },
+      error () {
+        return this.$store.getters.error
+      },
+      loading () {
+        return this.$store.getters.loading
       }
     },
-
+    watch: {
+      user (value) {
+        if (value !== null && value !== undefined) {
+          this.$router.push('/')
+        }
+      }
+    },
     methods: {
-      submit () {
-        this.$v.$touch()
-      },
       clear () {
         this.$v.$reset()
         this.email = ''
         this.password = ''
+      },
+      onSignin () {
+        this.$store.dispatch('signUserIn', {email: this.email, password: this.password})
+      },
+      onDismissed () {
+        this.$store.dispatch('clearError')
       }
     }
   }

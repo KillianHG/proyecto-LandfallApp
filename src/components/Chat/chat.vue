@@ -50,7 +50,7 @@
       border-radius: 12px;
       width: 60px;
       height: 37px;
-      top: 72.6%;
+      top: 75.6%;
       right: 3.5%;
 
     }

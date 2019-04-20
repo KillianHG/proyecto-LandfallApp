@@ -1,5 +1,5 @@
 <template>
-  <v-app :dark="!isDark">
+  <v-app dark>
     <v-navigation-drawer
       class="some"
       v-model="sideNav"
@@ -15,6 +15,13 @@
             <i :class="'ss ss-2x ss-' + item.icon"></i>
           </v-list-tile-action>
           <v-list-tile-content>{{ item.title }}</v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile v-if="userIsAuthenticated">
+          <v-list-tile-action>
+            <v-icon>exit_to_app</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>Logout</v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
@@ -40,6 +47,13 @@
           {{ item.title }}
         </v-btn>
       </v-toolbar-items>
+      <v-btn
+        v-if="userIsAuthenticated"
+        flat
+        @click="onLogout">
+        <v-icon left dark>exit_to_app</v-icon>
+        Logout
+      </v-btn>
     </v-toolbar>
 
     <main>
@@ -84,14 +98,6 @@
     data () {
       return {
         sideNav: false,
-        menuItems: [
-          {icon: 'boros', title: 'Torneos', link: '/contests'},
-          {icon: 'dkm', title: 'DeckBuilder', link: '/deckbuilder'},
-          {icon: 'parl3', title: 'Acerca de nosotros', link: '/aboutus'},
-          {icon: 'ulg', title: 'Sign Up', link: '/signup'},
-          {icon: 'atq', title: 'Sign In', link: '/signin'},
-          {icon: 'wth', title: 'Chat', link: '/chat'}
-        ],
         icons: [
           'fab fa-facebook-f',
           'fab fa-twitter',
@@ -106,6 +112,35 @@
           'https://www.linkedin.com',
           'https://www.instagram.com'
         ]
+      }
+    },
+    computed: {
+      menuItems () {
+        let menuItems = [
+          {icon: 'boros', title: 'Torneos', link: '/contests'},
+          {icon: 'dkm', title: 'DeckBuilder', link: '/deckbuilder'},
+          {icon: 'parl3', title: 'Acerca de nosotros', link: '/aboutus'},
+          {icon: 'wth', title: 'Chat', link: '/chat'},
+          {icon: 'ulg', title: 'Sign Up', link: '/signup'},
+          {icon: 'atq', title: 'Sign In', link: '/signin'}
+        ]
+        if (this.userIsAuthenticated) {
+          menuItems = [
+            {icon: 'boros', title: 'Torneos', link: '/contests'},
+            {icon: 'dkm', title: 'DeckBuilder', link: '/deckbuilder'},
+            {icon: 'parl3', title: 'Acerca de nosotros', link: '/aboutus'},
+            {icon: 'wth', title: 'Chat', link: '/chat'}
+          ]
+        }
+        return menuItems
+      },
+      userIsAuthenticated () {
+        return this.$store.getters.user !== null && this.$store.getters.user !== undefined
+      }
+    },
+    methods: {
+      onLogout () {
+        this.$store.dispatch('logout')
       }
     }
   }

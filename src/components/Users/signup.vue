@@ -4,7 +4,11 @@
     <div class="inner-content">
 
       <h1>Crea una cuenta</h1>
-
+      <v-layout row v-if="error">
+        <v-flex xs12 sm6 offset-sm3>
+          <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>
+        </v-flex>
+      </v-layout>
       <form>
         <v-text-field
           v-model="name"
@@ -60,7 +64,7 @@
           @change="$v.checkbox.$touch()"
           @blur="$v.checkbox.$touch()"
         ></v-checkbox>
-        <v-btn @click="submit">Submit</v-btn>
+        <v-btn @click="onSignup">Submit</v-btn>
         <v-btn @click="clear">Clear</v-btn>
       </form>
 
@@ -91,6 +95,7 @@
 
     data: () => ({
       name: '',
+      nickname: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -130,9 +135,24 @@
       },
       comparePasswords () {
         return this.password !== this.confirmPassword ? "Password don't match" : true
+      },
+      user () {
+        return this.$store.getters.user
+      },
+      error () {
+        return this.$store.getters.error
+      },
+      loading () {
+        return this.$store.getters.loading
       }
     },
-
+    watch: {
+      user (value) {
+        if (value !== null && value !== undefined) {
+          this.$router.push('/')
+        }
+      }
+    },
     methods: {
       submit () {
         this.$v.$touch()
@@ -145,6 +165,19 @@
         this.password = ''
         this.confirmPassword = ''
         this.checkbox = false
+      },
+      onSignup () {
+        this.$store.dispatch('signUserUp', {
+          email: this.email,
+          password: this.password,
+          name: this.name,
+          nickname: this.nickname,
+          saldo: '0',
+          dci: ''
+        })
+      },
+      onDismissed () {
+        this.$store.dispatch('clearError')
       }
     }
   }
