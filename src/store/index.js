@@ -8,12 +8,22 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     user: null,
+    nickname: null,
     loading: false,
     error: null
   },
   mutations: {
     setUser (state, payload) {
       state.user = payload
+    },
+    setNickname (state, payload) {
+      console.log(payload)
+      firebase.database().ref('users/' + payload.id + '/nickname').once('value')
+        .then(function (snapshot) {
+          console.log(snapshot)
+          state.nickname = snapshot.val()
+          console.log(state.nickname)
+        })
     },
     setLoading (state, payload) {
       state.loading = payload
@@ -75,6 +85,7 @@ export const store = new Vuex.Store({
             }
             // eslint-disable-next-line
             commit('setUser', newUser)
+            commit('setNickname', newUser)
           }
         )
         .catch(
@@ -87,6 +98,7 @@ export const store = new Vuex.Store({
     },
     autoSignIn ({commit}, payload) {
       commit('setUser', {id: payload.uid})
+      commit('setNickname', {id: payload.uid})
     },
     logout ({commit}) {
       firebase.auth().signOut()
@@ -99,6 +111,9 @@ export const store = new Vuex.Store({
   getters: {
     user (state) {
       return state.user
+    },
+    nickname (state) {
+      return state.nickname
     },
     loading (state) {
       return state.loading
