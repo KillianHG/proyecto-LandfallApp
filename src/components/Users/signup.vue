@@ -1,5 +1,5 @@
 <template>
-  <div class="form">
+  <div class="signform">
 
     <div class="inner-content">
 
@@ -186,67 +186,6 @@
 <style lang="scss">
 
 
-  .form{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url("../../assets/img/mtg-singup.jpg");
-    background-position-y: 2%;
-    background-position-x: 10%;
-    background-size: cover;
-    width: 100%;
-    height: 700px;
 
-    .inner-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 80%;
-      background-color: rgba(1, 1, 1, 0.75);
-      border-radius: 12px;
-      padding: 10px;
-
-      h1 {
-        border-bottom: 1px solid white;
-        width: 100%;
-        text-align: center;
-        margin-bottom: 25px;
-      }
-
-      form {
-        width: 100%;
-      }
-
-    }
-
-  }
-
-  @media (min-width: 100px) and (max-width: 1023px) {
-    .form{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background-image: url("../../assets/img/mtg-singup.jpg");
-      background-position-y: 2%;
-      background-position-x: 10%;
-      background-size: cover;
-      width: 100%;
-      height: 700px;
-
-
-      h1 {
-        border-bottom: 1px solid white;
-        width: 60%;
-        text-align: center;
-        margin-bottom: 25px;
-      }
-
-      form {
-        width: 60%;
-      }
-    }
-  }
 
 </style>

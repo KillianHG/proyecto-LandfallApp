@@ -1,5 +1,5 @@
 <template>
-  <div class="form">
+  <div class="signform">
     <div class="inner-content">
       <h1>Inicia sesión</h1>
       <v-layout row v-if="error">
@@ -99,34 +99,7 @@
 
 <style lang="scss">
 
-  .form{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    //margin: 10vw 0;
 
-    .inner-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 80%;
-      background-color: rgba(1, 1, 1, 0.75);
-      border-radius: 12px;
-      padding: 10px;
-
-      h1 {
-        border-bottom: 1px solid white;
-        width: 80%;
-        text-align: center;
-        margin-bottom: 25px;
-      }
-
-      form {
-        width: 80%;
-      }
-    }
-  }
 
 </style>
 

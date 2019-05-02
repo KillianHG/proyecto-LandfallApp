@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "firebase": "^5.10.0",
+    "mtgsdk": "^0.4.2",
     "node-sass": "^4.11.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
