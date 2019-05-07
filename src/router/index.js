@@ -8,6 +8,7 @@ import build from '@/components/DeckBuilder/build'
 import signin from '@/components/Users/signin'
 import signup from '@/components/Users/signup'
 import chat from '@/components/Chat/chat'
+import profile from '@/components/Profile/profile'
 
 Vue.use(Router)
 
@@ -52,6 +53,11 @@ export default new Router({
       path: '/chat',
       name: 'chat',
       component: chat
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: profile
     }
   ],
   mode: 'history'

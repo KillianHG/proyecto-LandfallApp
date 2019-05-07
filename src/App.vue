@@ -131,7 +131,9 @@
             {icon: 'boros', title: 'Torneos', link: '/contests'},
             {icon: 'dkm', title: 'DeckBuilder', link: '/deckbuilder'},
             {icon: 'parl3', title: 'Acerca de nosotros', link: '/aboutus'},
-            {icon: 'wth', title: 'Chat', link: '/chat'}
+            {icon: 'wth', title: 'Chat', link: '/chat'},
+            {icon: 'atq', title: 'Profile', link: '/profile'}
+
           ]
         }
         return menuItems
@@ -154,6 +156,7 @@
   body {
     position: relative;
     min-height: 100%;
+    font-family: "Source Sans Pro Regular";
   }
 
   .dark-button {
