@@ -1,33 +1,25 @@
 <template>
   <div class="chat-page">
     <div class="chat-container">
-      <ul class="message-list">
-        <div class="message">
+      <ul
+        v-for="message in chat"
+        class="message-list">
+        <div class="message"
+          :class="{my: myMessage(message.sender_id) }">
           <div class="nickname-message">
-            <h1 class="nickname">UserTest1:</h1>
-            <p>18:23:55 AM</p>
+            <h1 class="nickname">{{ message.sender_name }}:</h1>
+            <p>{{ message.created }}</p>
           </div>
           <div class="text">
-            <p>Hola Oriol!</p>
+            <p>{{ message.content }}</p>
           </div>
         </div>
-
-        <div class="message my">
-          <div class="nickname-message">
-            <h1 class="nickname">Nickname:</h1>
-            <p>18:23:55 AM</p>
-          </div>
-          <div class="text">
-            <p>Que te parece el chat?</p>
-          </div>
-        </div>
-
       </ul>
     </div>
 
     <div class="message-container">
-      <input type="text" class="text-input">
-      <button class="send-btn">
+      <input type="text" class="text-input" v-model="message">
+      <button class="send-btn" @click="sendMessage">
         <i class="ss ss-pleaf ss-mythic"></i>
       </button>
     </div>
@@ -35,8 +27,47 @@
 </template>
 
 <script>
+  import * as firebase from 'firebase'
+
   export default {
-    name: 'chat'
+    name: 'chat',
+
+    data: () => ({
+      message: ''
+    }),
+    computed: {
+      chat () {
+        return this.$store.getters.chat
+      },
+    },
+    methods: {
+      myMessage (id) {
+        if (id === this.$store.getters.uid) {
+          return true
+        } else {
+          return false
+        }
+      },
+      sendMessage () {
+        if (this.message != '') {
+          firebase.database().ref('chat/channels/channel/thread/').push({
+            content: this.message,
+            created: this.getTime(),
+            sender_id : this.$store.getters.uid,
+            sender_name: this.$store.getters.nickname
+          });
+          this.message = ''
+        }
+      },
+      getTime () {
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date+' '+time;
+        return dateTime
+      }
+
+    },
   }
 </script>
 

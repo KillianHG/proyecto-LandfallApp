@@ -8,9 +8,16 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     user: null,
+    userall: {
+      nickname: null,
+      name: null,
+      dci: null,
+      saldo: null,
+    },
     nickname: null,
     loading: false,
-    error: null
+    error: null,
+    chat: null
   },
   mutations: {
     setUser (state, payload) {
@@ -22,7 +29,17 @@ export const store = new Vuex.Store({
         .then(function (snapshot) {
           console.log(snapshot)
           state.nickname = snapshot.val()
-          console.log(state.nickname)
+          console.log(state.userall.nickname)
+        })
+    },
+    setChat (state) {
+      firebase.database().ref('chat/channels/channel/thread').once('value')
+        .then(function (snapshot) {
+          console.log(snapshot)
+          console.log(snapshot.val())
+          state.chat = snapshot.val()
+          console.log("guelcome to chat"),
+            console.log(state.chat)
         })
     },
     setLoading (state, payload) {
@@ -99,6 +116,7 @@ export const store = new Vuex.Store({
     autoSignIn ({commit}, payload) {
       commit('setUser', {id: payload.uid})
       commit('setNickname', {id: payload.uid})
+      commit('setChat')
     },
     logout ({commit}) {
       firebase.auth().signOut()
@@ -109,11 +127,20 @@ export const store = new Vuex.Store({
     }
   },
   getters: {
+    uid () {
+      return firebase.auth().currentUser.uid
+    },
     user (state) {
       return state.user
     },
+    userall (state) {
+      return state.userall
+    },
     nickname (state) {
       return state.nickname
+    },
+    chat (state) {
+      return state.chat
     },
     loading (state) {
       return state.loading
