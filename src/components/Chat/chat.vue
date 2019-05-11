@@ -33,41 +33,47 @@
     name: 'chat',
 
     data: () => ({
-      message: ''
+      message: '',
+      chat: [{}]
     }),
-    computed: {
-      chat () {
-        return this.$store.getters.chat
-      },
+    created () {
+      this.fetchChat()
     },
     methods: {
       myMessage (id) {
+        console.log('MY UID:' + this.$store.getters.uid)
+        console.log('MSG ID:' + id)
         if (id === this.$store.getters.uid) {
           return true
         } else {
           return false
         }
       },
+      fetchChat () {
+        firebase.database().ref('chat/channels/channel/thread').on('value', (data) => {
+          this.chat = data.val()
+        })
+      },
       sendMessage () {
-        if (this.message != '') {
+        if (this.message !== '') {
           firebase.database().ref('chat/channels/channel/thread/').push({
             content: this.message,
             created: this.getTime(),
-            sender_id : this.$store.getters.uid,
+            sender_id: this.$store.getters.uid,
             sender_name: this.$store.getters.nickname
-          });
+          })
           this.message = ''
         }
       },
       getTime () {
-        var today = new Date();
-        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date+' '+time;
+        var today = new Date()
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+        var time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()
+        var dateTime = date + ' ' + time
         return dateTime
       }
 
-    },
+    }
   }
 </script>
 

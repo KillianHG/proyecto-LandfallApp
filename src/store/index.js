@@ -12,7 +12,7 @@ export const store = new Vuex.Store({
       nickname: null,
       name: null,
       dci: null,
-      saldo: null,
+      saldo: null
     },
     nickname: null,
     loading: false,
@@ -32,15 +32,8 @@ export const store = new Vuex.Store({
           console.log(state.userall.nickname)
         })
     },
-    setChat (state) {
-      firebase.database().ref('chat/channels/channel/thread').once('value')
-        .then(function (snapshot) {
-          console.log(snapshot)
-          console.log(snapshot.val())
-          state.chat = snapshot.val()
-          console.log("guelcome to chat"),
-            console.log(state.chat)
-        })
+    setLoadedChat (state, payload) {
+      state.chat = payload
     },
     setLoading (state, payload) {
       state.loading = payload
@@ -100,7 +93,6 @@ export const store = new Vuex.Store({
             const newUser = {
               id: user.uid
             }
-            // eslint-disable-next-line
             commit('setUser', newUser)
             commit('setNickname', newUser)
           }
@@ -116,11 +108,24 @@ export const store = new Vuex.Store({
     autoSignIn ({commit}, payload) {
       commit('setUser', {id: payload.uid})
       commit('setNickname', {id: payload.uid})
-      commit('setChat')
     },
     logout ({commit}) {
-      firebase.auth().signOut()
-      commit('setUser', null)
+      firebase.auth().signOut().then(
+        commit('setUser', null)
+      )
+    },
+    loadChat ({commit}) {
+      commit('setLoading', true)
+      firebase.database().ref('chat/channels/channel/thread').once('value')
+        .then((data) => {
+          commit('setLoading', false)
+          commit('setLoadedChat', data.val())
+        }).catch(
+        (error) => {
+          console.log(error)
+          commit('setLoading', false)
+        }
+      )
     },
     clearError ({commit}) {
       commit('clearError')
