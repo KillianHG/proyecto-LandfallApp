@@ -98,7 +98,7 @@
   export default {
     data () {
       return {
-        username: this.$store.getters.nickname,
+        user: null,
         sideNav: false,
         icons: [
           'fab fa-facebook-f',
@@ -142,9 +142,13 @@
         return this.$store.getters.user !== null && this.$store.getters.user !== undefined
       }
     },
+    mounted () {
+      this.user = this.$store.getters.user
+    },
     methods: {
       onLogout () {
         this.$store.dispatch('logout')
+        this.$router.push('/')
       }
     }
   }

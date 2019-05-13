@@ -41,7 +41,7 @@
     },
     methods: {
       myMessage (id) {
-        if (id === this.$store.getters.uid) {
+        if (id === this.$store.getters.user.id) {
           return true
         } else {
           return false

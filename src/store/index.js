@@ -24,13 +24,13 @@ export const store = new Vuex.Store({
       if (payload != null)  {
         firebase.database().ref('users/' + payload.id).once('value')
           .then(function (snapshot) {
-            console.log(payload.email)
+            state.user = snapshot.val()
             state.user.id = payload.id
             state.user.email = payload.email
-            state.user.nickname = snapshot.val().nickname
+            /* state.user.nickname = snapshot.val().nickname
             state.user.name = snapshot.val().name
             state.user.dci = snapshot.val().dci
-            state.user.saldo = snapshot.val().saldo
+            state.user.saldo = snapshot.val().saldo */
           })
       } else {
         state.user = null
