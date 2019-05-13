@@ -18,7 +18,7 @@
     </div>
 
     <div class="message-container">
-      <input type="text" class="text-input" v-model="message" @keyup.enter="sendMessage">
+      <input type="text" class="text-input" v-model="message">
       <button class="send-btn" @click="sendMessage">
         <i class="ss ss-pleaf ss-mythic"></i>
       </button>
@@ -34,11 +34,17 @@
 
     data: () => ({
       message: '',
-      chat: [{}]
+      chat: [{}],
+      scrolled: false
     }),
     created () {
       this.fetchChat()
     },
+    updated(){
+      this.scrollChatToBottom()
+
+    },
+
     methods: {
       myMessage (id) {
         if (id === this.$store.getters.user.id) {
@@ -61,6 +67,7 @@
             sender_name: this.$store.getters.user.nickname
           })
           this.message = ''
+          this.scrollChatToBottom()
         }
       },
       getTime () {
@@ -69,6 +76,16 @@
         var time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()
         var dateTime = date + ' ' + time
         return dateTime
+      },
+      scrollAfterMounted(){
+        if (!this.scrolled){
+          this.scrollChatToBottom();
+          this.scrolled = true;
+        }
+      },
+      scrollChatToBottom(){
+        var objDiv = document.getElementById("chat");
+        if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
       }
 
     }
@@ -87,6 +104,7 @@
       display: flex;
       flex-direction: column;
       min-height: 100px;
+      height: 500px;
       width: 95%;
       margin: 10px 0;
       background-color: rgba(255, 255, 255, 0.65);
@@ -105,10 +123,14 @@
           flex-direction: row;
           width: 50%;
           height: auto;
-          margin-top: 15px;
+          margin-bottom: 15px;
           background-color: #EFEFEF;
           border-radius: 12px;
           padding: 10px;
+
+          &:first-child {
+            margin-top: 15px;
+          }
 
           .nickname-message {
             display: flex;
@@ -195,7 +217,7 @@
         margin: 10px 0;
         background-color: rgba(255, 255, 255, 0.65);
         border-radius: 12px;
-        height: 130vw;
+        height: 500px;
 
         .message-list {
           width: 100%;
