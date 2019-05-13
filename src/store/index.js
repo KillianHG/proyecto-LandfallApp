@@ -7,33 +7,34 @@ Vue.use(Vuex)
 // noinspection JSValidateTypes
 export const store = new Vuex.Store({
   state: {
-    user: null,
-    userall: {
+    user: {
+      id: null,
+      email: null,
       nickname: null,
       name: null,
       dci: null,
       saldo: null
     },
-    nickname: null,
     loading: false,
     error: null,
-    chat: null
   },
   mutations: {
     setUser (state, payload) {
-      state.user = payload
-    },
-    setNickname (state, payload) {
       console.log(payload)
-      firebase.database().ref('users/' + payload.id + '/nickname').once('value')
-        .then(function (snapshot) {
-          console.log(snapshot)
-          state.nickname = snapshot.val()
-          console.log(state.userall.nickname)
-        })
-    },
-    setLoadedChat (state, payload) {
-      state.chat = payload
+      if (payload != null)  {
+        firebase.database().ref('users/' + payload.id).once('value')
+          .then(function (snapshot) {
+            console.log(payload.email)
+            state.user.id = payload.id
+            state.user.email = payload.email
+            state.user.nickname = snapshot.val().nickname
+            state.user.name = snapshot.val().name
+            state.user.dci = snapshot.val().dci
+            state.user.saldo = snapshot.val().saldo
+          })
+      } else {
+        state.user = null
+      }
     },
     setLoading (state, payload) {
       state.loading = payload
@@ -54,11 +55,7 @@ export const store = new Vuex.Store({
         .then(
           user => {
             commit('setLoading', false)
-            const newUser = {
-              id: user.uid
-            }
-            // eslint-disable-next-line
-            commit('setUser', newUser)
+            commit('setUser', {id: user.uid, email: payload.email})
             firebase.database().ref('users/' + firebase.auth().currentUser.uid).set({
               name: payload.name,
               nickname: payload.nickname,
@@ -90,11 +87,7 @@ export const store = new Vuex.Store({
         .then(
           user => {
             commit('setLoading', false)
-            const newUser = {
-              id: user.uid
-            }
-            commit('setUser', newUser)
-            commit('setNickname', newUser)
+            commit('setUser', {id: user.uid, email: payload.email})
           }
         )
         .catch(
@@ -106,25 +99,11 @@ export const store = new Vuex.Store({
         )
     },
     autoSignIn ({commit}, payload) {
-      commit('setUser', {id: payload.uid})
-      commit('setNickname', {id: payload.uid})
+      commit('setUser', {id: payload.uid, email: payload.email})
     },
     logout ({commit}) {
       firebase.auth().signOut().then(
         commit('setUser', null)
-      )
-    },
-    loadChat ({commit}) {
-      commit('setLoading', true)
-      firebase.database().ref('chat/channels/channel/thread').once('value')
-        .then((data) => {
-          commit('setLoading', false)
-          commit('setLoadedChat', data.val())
-        }).catch(
-        (error) => {
-          console.log(error)
-          commit('setLoading', false)
-        }
       )
     },
     clearError ({commit}) {
@@ -138,14 +117,8 @@ export const store = new Vuex.Store({
     user (state) {
       return state.user
     },
-    userall (state) {
-      return state.userall
-    },
     nickname (state) {
       return state.nickname
-    },
-    chat (state) {
-      return state.chat
     },
     loading (state) {
       return state.loading

@@ -18,7 +18,7 @@
     </div>
 
     <div class="message-container">
-      <input type="text" class="text-input" v-model="message">
+      <input type="text" class="text-input" v-model="message" @keyup.enter="sendMessage">
       <button class="send-btn" @click="sendMessage">
         <i class="ss ss-pleaf ss-mythic"></i>
       </button>
@@ -41,8 +41,6 @@
     },
     methods: {
       myMessage (id) {
-        console.log('MY UID:' + this.$store.getters.uid)
-        console.log('MSG ID:' + id)
         if (id === this.$store.getters.uid) {
           return true
         } else {
@@ -59,8 +57,8 @@
           firebase.database().ref('chat/channels/channel/thread/').push({
             content: this.message,
             created: this.getTime(),
-            sender_id: this.$store.getters.uid,
-            sender_name: this.$store.getters.nickname
+            sender_id: this.$store.getters.user.id,
+            sender_name: this.$store.getters.user.nickname
           })
           this.message = ''
         }

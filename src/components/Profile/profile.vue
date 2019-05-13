@@ -4,14 +4,14 @@
       <div class="profile-img">
 
       </div>
-      <p class="nickname">{{ nickname }}</p>
+      <p class="nickname">{{ user.nickname }}</p>
     </div>
     <div class="profile-info-container">
       <div class="prof-box">
         <div class="profile-info">
           <div class="name">
             <p>NOMBRE:</p>
-            <p>ASOM NOMBRE</p>
+            <p>{{ user.name }}</p>
           </div>
           <div class="lastname">
             <p>APELLIDO:</p>
@@ -19,11 +19,11 @@
           </div>
           <div class="email">
             <p>EMAIL:</p>
-            <p>pepito@gmail.com</p>
+            <p>{{ user.email }}</p>
           </div>
           <div class="saldo">
             <p>SALDO EN TIENDA:</p>
-            <p>0</p>
+            <p>{{ user.saldo }} €</p>
           </div>
           <div></div>
           <button>CAMBIAR CONTRASEÑA</button>
@@ -49,7 +49,7 @@
     name: 'profile',
     data () {
       return{
-        nickname: this.$store.getters.nickname
+        user: this.$store.getters.user
       }
     }
   }

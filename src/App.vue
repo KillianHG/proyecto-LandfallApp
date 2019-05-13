@@ -86,7 +86,7 @@
         <v-divider></v-divider>
 
         <v-card-text class="white--text">
-          &copy;2018 — <strong>{{ username }} LandFall S.L. TODOS LOS DERECHOS RESERVADOS.
+          &copy;2018 — <strong>LandFall S.L. TODOS LOS DERECHOS RESERVADOS.
           Todas las marcas registradas referenciadas son propiedad de sus respectivos dueños.</strong>
         </v-card-text>
       </v-card>
