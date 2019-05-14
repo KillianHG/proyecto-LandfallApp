@@ -7,14 +7,7 @@ Vue.use(Vuex)
 // noinspection JSValidateTypes
 export const store = new Vuex.Store({
   state: {
-    user: {
-      id: null,
-      email: null,
-      nickname: null,
-      name: null,
-      dci: null,
-      saldo: null
-    },
+    user: null,
     loading: false,
     error: null,
   },
@@ -27,10 +20,10 @@ export const store = new Vuex.Store({
             state.user = snapshot.val()
             state.user.id = payload.id
             state.user.email = payload.email
-            /* state.user.nickname = snapshot.val().nickname
+            state.user.nickname = snapshot.val().nickname
             state.user.name = snapshot.val().name
             state.user.dci = snapshot.val().dci
-            state.user.saldo = snapshot.val().saldo */
+            state.user.saldo = snapshot.val().saldo
           })
       } else {
         state.user = null
@@ -128,3 +121,4 @@ export const store = new Vuex.Store({
     }
   }
 })
+

@@ -18,7 +18,7 @@
     </div>
 
     <div class="message-container">
-      <input type="text" class="text-input" v-model="message">
+      <input type="text" class="text-input" v-model="message" @keyup.enter="sendMessage">
       <button class="send-btn" @click="sendMessage">
         <i class="ss ss-pleaf ss-mythic"></i>
       </button>
