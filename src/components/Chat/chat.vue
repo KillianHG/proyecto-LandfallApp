@@ -1,6 +1,6 @@
 <template>
   <div class="chat-page">
-    <div class="chat-container">
+    <div class="chat-container" id="chat">
       <ul
         v-for="message in chat"
         class="message-list">
