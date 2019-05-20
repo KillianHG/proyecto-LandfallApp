@@ -3,8 +3,8 @@
     <div class="deckbuilder-container">
       <div class="searched-cards">
         <div class="searchbar-container">
-          <input class="searchbar" type="text" v-model="cardName" placeholder="Buscar">
-          <button class="search-button" v-on:click="fetchCard()"></button>
+          <input class="searchbar" type="text" v-model="cardName" @keyup.enter="fetchCard()" placeholder="Buscar">
+          <button class="search-button" @click="fetchCard()"></button>
         </div>
 
         <template v-if="this.fetchedCards !== null">
@@ -22,25 +22,24 @@
       </div>
 
       <div class="selected-cards" v-if="selectedCards !== null">
-        <input class="deck-name" type="text" placeholder="Nombre del Mazo">
+        <input class="deck-name" type="text" v-model="deckName" placeholder="Nombre del Mazo">
 
         <div class="cards">
           <template v-for="(cards, index) in selectedCards">
-            <a class="deck-card" v-on:click="removeCards(index)">
+            <a class="deck-card" :class="cards.colors[0]" v-on:click="removeCards(index)">
               <p class="card-name">{{ cards.name }} x{{ cards.quantity }}</p>
             </a>
           </template>
         </div>
       </div>
     </div>
-    <button class="save-deck">Guardar Mazo</button>
+    <button class="save-deck" @click="publishDeck">Guardar Mazo</button>
   </div>
 </template>
 <script>
 
+  import * as firebase from 'firebase'
   const mtg = require('mtgsdk')
-
-
 
   export default {
     name: 'deckbuilder',
@@ -92,56 +91,11 @@
           this.selectedCards.splice(index, 1)
         }
       },
-
-      cardColors() {
-        var col=document.getElementById("card");
-
-        for (let i = 0; i < this.fetchedCards.length ; i++) {
-          console.log(this.fetchedCards[i].colors)
-
-          switch (this.fetchedCards[i].colors[0]) {
-            case "White":
-              col.style.backgroundColor="#F4D27A";
-              console.log("W")
-              break;
-            case "Black":
-              col.style.backgroundColor="#A89F9E";
-              console.log("Black")
-              break;
-            case "Red":
-              col.style.backgroundColor="#E59972";
-              console.log("R")
-              break;
-            case "Blue":
-              col.style.backgroundColor="#A2C0E8";
-              console.log("B")
-              break;
-            case "Green":
-              col.style.backgroundColor="#9AD897";
-              console.log("G")
-
-          }
-        }
-      },
-
-      cardColor(card) {
-
-          switch (card.colors[0]) {
-            case "White":
-              return "#F4D27A";
-              break;
-            case "Black":
-              return "#A89F9E";
-              break;
-            case "Red":
-              return "#E59972";
-              break;
-            case "Blue":
-              return "#A2C0E8";
-              break;
-            case "Green":
-              return "#9AD897";
-          }
+      publishDeck() {
+        firebase.database().ref('users/' + this.$store.getters.user.id + '/decks/').push({
+          name: this.deckName,
+          deck: this.selectedCards
+        }).then(this.$router.push('/'))
       }
     }
   }
@@ -347,6 +301,30 @@
               color: #424242;
               margin: 0;
               height: 33px;
+            }
+
+            &.Red {
+              background-color: #E59972;
+            }
+
+            &.White {
+              background-color: #F4DA97;
+
+            }
+
+            &.Green {
+              background-color: #9AD897;
+
+            }
+
+            &.Black {
+              background-color: #A89F9E;
+
+            }
+
+            &.Blue {
+              background-color: #A2C0E8;
+
             }
           }
         }

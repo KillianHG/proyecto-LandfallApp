@@ -64,7 +64,7 @@
           @change="$v.checkbox.$touch()"
           @blur="$v.checkbox.$touch()"
         ></v-checkbox>
-        <v-btn @click="onSignup">Submit</v-btn>
+        <v-btn @click="onSignup" :dismissed="loading" :loading="loading">Submit</v-btn>
         <v-btn @click="clear">Clear</v-btn>
       </form>
 
@@ -173,7 +173,8 @@
           name: this.name,
           nickname: this.nickname,
           saldo: '0',
-          dci: ''
+          dci: '',
+          decks: [{}]
         })
       },
       onDismissed () {

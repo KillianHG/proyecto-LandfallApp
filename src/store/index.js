@@ -24,6 +24,8 @@ export const store = new Vuex.Store({
             state.user.name = snapshot.val().name
             state.user.dci = snapshot.val().dci
             state.user.saldo = snapshot.val().saldo
+            state.user.decks = snapshot.val().decks
+            console.log(snapshot.val().decks)
           })
       } else {
         state.user = null
@@ -53,7 +55,8 @@ export const store = new Vuex.Store({
               name: payload.name,
               nickname: payload.nickname,
               saldo: payload.saldo,
-              dci: payload.dci
+              dci: payload.dci,
+              decks: payload.decks
             }).then(
               commit('setLoading', false)
             ).catch(

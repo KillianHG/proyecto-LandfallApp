@@ -25,7 +25,7 @@
           @input="$v.password.$touch()"
           @blur="$v.password.$touch()"
         ></v-text-field>
-        <v-btn @click="onSignin">Enter</v-btn>
+        <v-btn @click="onSignin" :disabled="loading" :loading="loading">Enter</v-btn>
         <v-btn @click="clear">Clear</v-btn>
       </form>
     </div>

@@ -9,6 +9,7 @@ import signin from '@/components/Users/signin'
 import signup from '@/components/Users/signup'
 import chat from '@/components/Chat/chat'
 import profile from '@/components/Profile/profile'
+import AuthGuard from './AuthGuard'
 
 Vue.use(Router)
 
@@ -32,12 +33,14 @@ export default new Router({
     {
       path: '/DeckBuilder',
       name: 'deckbuilder',
-      component: builds
+      component: builds,
+      beforeEnter: AuthGuard
     },
     {
       path: '/Deckbuilder/:id',
       name: 'build',
-      component: build
+      component: build,
+      beforeEnter: AuthGuard
     },
     {
       path: '/SignIn',
@@ -52,7 +55,8 @@ export default new Router({
     {
       path: '/chat',
       name: 'chat',
-      component: chat
+      component: chat,
+      beforeEnter: AuthGuard
     },
     {
       path: '/profile',
