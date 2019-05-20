@@ -10,7 +10,7 @@
         <template v-if="this.fetchedCards !== null">
           <div class="cards-result">
             <template v-for="card in fetchedCards">
-              <a class="card" v-on:click="selectedCard(card)" v-if="card.imageUrl != null">
+              <a class="card" :class="card.colors[0]" id="card" v-on:click="selectedCard(card)" v-if="card.imageUrl != null">
                 <p class="card-name">{{ card.name }}</p>
                 <p class="card-set">{{ card.set }}</p>
                 <img class="hover-img" v-bind:src="card.imageUrl" v-if="card.imageUrl != null">
@@ -51,7 +51,8 @@
         show: false,
         fetchedCards: null,
         selectedCards: [],
-        fetching: false
+        fetching: false,
+        hello: true
       }
     },
     methods: {
@@ -68,7 +69,6 @@
             this.fetchedCards = cards;
           })
       },
-
       selectedCard(card) {
         let alreadyInDeck = false;
         this.selectedCards.map(c => {
@@ -76,6 +76,7 @@
             alreadyInDeck = true;
           }
         });
+
 
         if (alreadyInDeck){
           card.quantity++;
@@ -90,6 +91,57 @@
         if (this.selectedCards[index].quantity <= 0){
           this.selectedCards.splice(index, 1)
         }
+      },
+
+      cardColors() {
+        var col=document.getElementById("card");
+
+        for (let i = 0; i < this.fetchedCards.length ; i++) {
+          console.log(this.fetchedCards[i].colors)
+
+          switch (this.fetchedCards[i].colors[0]) {
+            case "White":
+              col.style.backgroundColor="#F4D27A";
+              console.log("W")
+              break;
+            case "Black":
+              col.style.backgroundColor="#A89F9E";
+              console.log("Black")
+              break;
+            case "Red":
+              col.style.backgroundColor="#E59972";
+              console.log("R")
+              break;
+            case "Blue":
+              col.style.backgroundColor="#A2C0E8";
+              console.log("B")
+              break;
+            case "Green":
+              col.style.backgroundColor="#9AD897";
+              console.log("G")
+
+          }
+        }
+      },
+
+      cardColor(card) {
+
+          switch (card.colors[0]) {
+            case "White":
+              return "#F4D27A";
+              break;
+            case "Black":
+              return "#A89F9E";
+              break;
+            case "Red":
+              return "#E59972";
+              break;
+            case "Blue":
+              return "#A2C0E8";
+              break;
+            case "Green":
+              return "#9AD897";
+          }
       }
     }
   }
@@ -142,7 +194,7 @@
             width: 100%;
             height: 100%;
             border-radius: 8px;
-
+            text-transform: capitalize;
           }
           .search-button {
             position: absolute;
@@ -201,6 +253,30 @@
               color: #424242;
               margin: 0;
               height: 33px;
+            }
+
+            &.Red {
+              background-color: #E59972;
+            }
+
+            &.White {
+              background-color: #F4DA97;
+
+            }
+
+            &.Green {
+              background-color: #9AD897;
+
+            }
+
+            &.Black {
+              background-color: #A89F9E;
+
+            }
+
+            &.Blue {
+              background-color: #A2C0E8;
+
             }
           }
 

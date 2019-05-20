@@ -47,9 +47,9 @@
 <script>
   export default {
     name: 'profile',
-    data () {
-      return{
-        user: this.$store.getters.user
+    computed: {
+      user () {
+        return this.$store.getters.user
       }
     }
   }
